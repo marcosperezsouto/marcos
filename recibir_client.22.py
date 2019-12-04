@@ -2,12 +2,14 @@ import paho.mqtt.client as mqtt
 
 broker_address = "localhost"
 broker_port = 1883
-topic = "prueba"
+
+topics = ['prueba', 'prueba2', 'prueba3']
 
 def on_connect(client, userdata, flags, rc):
     print("on connect"+str(rc))
     try:
-        client.subscribe(topic)
+        for topic in topics:
+            client.subscribe(topic)
         print("subscribed")
     except:
         print("exception")
