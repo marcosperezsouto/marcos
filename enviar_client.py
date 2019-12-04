@@ -1,6 +1,8 @@
 
 import paho.mqtt.client as mqtt
 import time
+
+print('Iniciando programa')
            
 broker_address="10.0.0.153"
 client = mqtt.Client('marcos')
