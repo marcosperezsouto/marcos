@@ -1,8 +1,17 @@
 #!/usr/bin/env python3
 
+import paho.mqtt.client as mqtt
 import json
 import os
 import csv
+
+# crear variables
+
+broker_address = "localhost"
+broker_port = 1883
+
+topics = ['prueba', 'prueba2', 'prueba3']
+
 
 cefrico = os.path.join(os.path.dirname(__file__), 'cefrico.json')
 cefrico2 = os.path.join(os.path.dirname(__file__), 'cefrico2.json')
@@ -28,9 +37,29 @@ def guardar_csv(fichero, datos):
         for key in datos:
             csv_file.writerow([key, datos[key]['total']])
 
-def mi_funcion(....):
-    msg.topic, msg.payload
-    
+def on_connect(client, userdata, flags, rc):
+    print("on connect"+str(rc))
+    try:
+        for topic in topics:
+            client.subscribe(topic)
+        print("subscribed")
+    except:
+        print("exception")
+
+def on_message(client, userdata, msg):
+    topic = msg.topic
+    dato = msg.payload
+    print(topic) 
+    print(dato.decode("utf-8"))
+
+
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
+
+client.connect(broker_address, broker_port, 60)
+
+client.loop_forever()
 
 # ejemplos datos "msg.payload"
 topico_salad = 'salad'
@@ -56,35 +85,13 @@ guardar_fichero(cefrico2, cefrico_data)
 guardar_csv(cefrico_csv, cefrico_data)
 
 
-# recibir-mqtt
-import paho.mqtt.client as mqtt 
 
-broker_address = "localhost"
-broker_port = 1883
+ 
 
-topics = ['prueba', 'prueba2', 'prueba3']
 
-def on_connect(client, userdata, flags, rc):
-    print("on connect"+str(rc))
-    try:
-        for topic in topics:
-            client.subscribe(topic)
-        print("subscribed")
-    except:
-        print("exception")
 
-def on_message(client, userdata, msg):
-    topic = msg.topic
-    dato = msg.payload
-    print(topic) 
-    print(dato.decode("utf-8"))
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
 
-client.connect(broker_address, broker_port, 60)
 
-client.loop_forever()
 
 
