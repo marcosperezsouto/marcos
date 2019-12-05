@@ -61,23 +61,14 @@ client.connect(broker_address, broker_port, 60)
 
 client.loop_forever()
 
-# ejemplos datos "msg.payload"
-topico_salad = 'salad'
-salad_total = 100
-
-
-topico_italia = 'italia'
-italia_total = 200
-
-
 
 # generar topics en diccionario
-if not topico_salad in cefrico_data:
-    cefrico_data["msg.topic"] = {}
+if not topic in cefrico_data:
+    cefrico_data[topic] = {}
 
 # guarda en diccionario datos topic y payload
-cefrico_data["msg.topic"]['total'] = "msg.payload"
-cefrico_data[topico_salad]['fecha-total'] = salad_total
+cefrico_data[topic]['consumo'] = dato
+cefrico_data[topic]['fecha-total'] = salad_total
 
 
 # guardar archivos
