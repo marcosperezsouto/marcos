@@ -4,12 +4,12 @@ import time
 
 print('Iniciando programa')
            
-broker_address="10.0.0.153"
-client = mqtt.Client('marcos')
+broker_address="localhost"
+client = mqtt.Client('italia')
 client.connect(broker_address)
 
 topic = "prueba"
-payload = "hola"
+payload = "152"
 client.publish(topic, payload)
 
 

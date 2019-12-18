@@ -3,10 +3,19 @@
 import json
 import os
 import csv
+import paho.mqtt.client as mqtt
+import time
+
+broker_address = "localhost"
+broker_port = 1883
+topics = ['italia', 'salaD', 'lavadora', 'prueba']
 
 cefrico = os.path.join(os.path.dirname(__file__), 'cefrico.json')
+print(cefrico)
 cefrico2 = os.path.join(os.path.dirname(__file__), 'cefrico2.json')
+print(cefrico2)
 cefrico_csv = os.path.join(os.path.dirname(__file__), 'cefrico.csv')
+print(cefrico_csv)
 
 try:
     with open(cefrico, 'r') as cefrico_file:
@@ -28,31 +37,52 @@ def guardar_csv(fichero, datos):
         for key in datos:
             csv_file.writerow([key, datos[key]['total']])
 
-def mi_funcion(....):
-    msg.topic, msg.payload
-    
-
-# ejemplos datos "msg.payload"
-topico_salad = 'salad'
-salad_total = 100
-
-
-topico_italia = 'italia'
-italia_total = 200
+def on_connect(client, userdata, flags, rc):
+    print("on connect"+str(rc))
+    try:
+        for topic in topics:
+            client.subscribe(topic)
+        print("subscribed")
+    except:
+        print("exception")
 
 
+def on_message(client, userdata, msg):
+    print(msg.topic)
+    print(msg.payload)
+   
+    # generar topics en diccionario
+    if not msg.topic in cefrico_data:
+        cefrico_data[msg.topic] = {}
+        print(cefrico_data)
 
-# generar topics en diccionario
-if not topico_salad in cefrico_data:
-    cefrico_data["msg.topic"] = {}
+    # guarda en diccionario datos topic y payload
+    cefrico_data[msg.topic]['total'] = msg.payload
+    cefrico_data[msg.topic]['fecha'] = time.strftime("%d/%m/%y-%H:%M")
+    print(time.strftime("%d/%m/%y-%H:%M"))
 
-# guarda en diccionario datos topic y payload
-cefrico_data["msg.topic"]['total'] = "msg.payload"
-cefrico_data[topico_salad]['fecha-total'] = salad_total
+    # guardar archivos
+    guardar_fichero(cefrico2, cefrico_data)
+    guardar_csv(cefrico_csv, cefrico_data)
 
 
-# guardar archivos
-guardar_fichero(cefrico2, cefrico_data)
-guardar_csv(cefrico_csv, cefrico_data)
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
+
+client.connect(broker_address, broker_port, 60)
+
+client.loop_forever()
+
+
+
+
+
+
+
+
+
+
+
 
 
