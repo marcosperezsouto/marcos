@@ -15,9 +15,9 @@ def on_connect(client, userdata, flags, rc):
         print("exception")
 
 def on_message(client, userdata, msg):
-    print(msg.topic)
-    print(msg.payload)
+    topic = msg.topic
     dato = msg.payload
+    print(topic) 
     print(dato.decode("utf-8"))
 
 client = mqtt.Client()
