@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 
 import json
@@ -32,12 +33,11 @@ def guardar_fichero(fichero, datos):
         
 
 def guardar_csv(fichero, datos):
-    with open(fichero, 'w', newline=' ') as fichero_file:
+    with open(fichero, 'a') as fichero_file:
         csv_file = csv.writer(fichero_file)
         csv_file.writerow(['nombre', 'total', 'fecha'])
         for key in datos:
-            csv_file.writerow([key, datos[key]['total'], datos[key]['fecha']])
-         
+            csv_file.writerow([key, datos[key]['total'], datos[key]['fecha']])         
 
 def on_connect(client, userdata, flags, rc):
     print("on connect"+str(rc))
@@ -54,20 +54,20 @@ def on_message(client, userdata, msg):
     topic = msg.topic
     print(topic)
     dato = msg.payload
-    print(dato.decode("utf-8"))
+    totales = dato.decode("utf-8")
     # guarda en diccionario datos topic y payload
     # generar topics en diccionario
     # guardar archivos
+    topic_data = {}
+    cefrico_data = {}
     if not topic in cefrico_data:
         cefrico_data[topic] = {}
         print(cefrico_data)
-        print('hola')
-    print('hola2')
 
-    cefrico_data[topic]['total'] = dato
+
+    cefrico_data[topic]['total'] = totales
     fecha_str = datetime.datetime.now().replace(microsecond=0).isoformat()
     cefrico_data[topic]['fecha'] = fecha_str
-    print('hola3')
     print(cefrico_data)
 
     guardar_fichero(cefrico2, cefrico_data)
