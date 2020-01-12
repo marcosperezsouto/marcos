@@ -8,8 +8,8 @@ broker_address="localhost"
 client = mqtt.Client('italia')
 client.connect(broker_address)
 
-topic = "prueba"
-payload = "152"
+topic = "salaD"
+payload = "120"
 client.publish(topic, payload)
 
 

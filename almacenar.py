@@ -36,9 +36,8 @@ def crear_csv(fichero, datos):
 crear_csv(cefrico_csv, create_data)
 
 def guardar_fichero(fichero, datos):
-    with open(fichero, 'w') as fichero_file:
+    with open(fichero, 'a') as fichero_file:
         json.dump(datos, fichero_file, indent='  ')
-
 
 
 def guardar_csv(fichero, datos):

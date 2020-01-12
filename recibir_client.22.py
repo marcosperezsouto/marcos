@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt 
 
-broker_address = "192.168.1.136"
+broker_address = "10.0.0.150"
 broker_port = 1883
 
 topics = ['prueba', 'prueba2', 'prueba3']
