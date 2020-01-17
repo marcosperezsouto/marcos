@@ -6,6 +6,7 @@ import os
 import csv
 import paho.mqtt.client as mqtt
 import datetime
+import time
 
 broker_address = "localhost"
 broker_port = 1883
@@ -31,7 +32,7 @@ create_data = {}
 def crear_csv(fichero, datos):
     with open(fichero, 'w') as f:
         csv_create = csv.writer(f)
-        csv_create.writerow(['nombre', 'total', 'fecha'])
+        csv_create.writerow(['contador', 'fecha', 'hora', 'litros'])
         
 crear_csv(cefrico_csv, create_data)
 
@@ -44,7 +45,7 @@ def guardar_csv(fichero, datos):
     with open(fichero, 'a') as f:
         csv_file = csv.writer(f)
         for key in datos:
-            csv_file.writerow([key, datos[key]['total'], datos[key]['fecha']])         
+            csv_file.writerow([key, datos[key]['fecha'], datos[key]['hora'], datos[key]['litros']])         
 
 
 def on_connect(client, userdata, flags, rc):
@@ -70,9 +71,11 @@ def on_message(client, userdata, msg):
         print(cefrico_data)
 
 
-    cefrico_data[topic]['total'] = totales
-    fecha_str = datetime.datetime.now().replace(microsecond=0).isoformat()
+    fecha_str = datetime.date.today().isoformat()
     cefrico_data[topic]['fecha'] = fecha_str
+    hora_str = time.strftime("%H:%M")
+    cefrico_data[topic]['hora'] = hora_str
+    cefrico_data[topic]['litros'] = totales
     print(cefrico_data)
 
     guardar_fichero(cefrico2, cefrico_data)

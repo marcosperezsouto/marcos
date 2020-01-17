@@ -1,0 +1,33 @@
+#!/usr/bin/python3
+
+import os
+
+hostname = "192.168.1.136"
+response = os.system("ping -c 1 " + hostname + " > /dev/null 2>&1")
+
+if response == 0:
+	print (hostname, 'up')
+else:
+	print (hostname, 'down')
+
+input('presiona INTRO')
+
+import paho.mqtt.client as mqtt
+
+broker = "192.168.1.136"
+client = mqtt.Client("marcos")
+port = 1883
+
+input('presiona INTRO')
+
+client.connect(broker,port)
+
+input('presiona INTRO')
+
+topic = "prueba"
+client.publish(topic, 'hola')
+
+input('presiona INTRO')
+
+
+

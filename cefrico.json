@@ -1,6 +1,7 @@
 [
-  "topic",{
-    "total": 50,
-    "fecha": "fecha"
+  "contador",{
+    "fecha": "fecha",
+    "hora": "hora" ,
+    "litros": 50
   },
 ]
