@@ -2,11 +2,8 @@ import paho.mqtt.client as mqtt
 import RPi.GPIO as GPIO
 import time
 
-topic = "prueba"
-broker_address="localhost"
-client = mqtt.Client('marcos')
-client.connect(broker_address)
-litros_pulso = 20
+payload = 0
+litros_pulso = 0
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -23,11 +20,16 @@ while True:
         
     minuto = time.strftime("%M:%S")
     if minuto in('00:00', '15:00', '30:00', '45:00'):
+        topic = "prueba"
+        broker_address="localhost"
+        client = mqtt.Client('cefrico')
+        client.connect(broker_address)
         print('Datos enviados')
         client.publish(topic, payload)
+        payload = 0
         litros_pulso = 0
         time.sleep(1)
-    time.sleep(0.2)
+    time.sleep(0.3)
     
 
 
