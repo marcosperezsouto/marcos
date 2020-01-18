@@ -80,7 +80,8 @@ def on_message(client, userdata, msg):
 
     guardar_fichero(cefrico2, cefrico_data)
     guardar_csv(cefrico_csv, cefrico_data)
-    print('recibido')  
+    print('recibido') 
+    dato = 0 
 
     
 
