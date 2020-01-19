@@ -10,7 +10,7 @@ import time
 
 broker_address = "localhost"
 broker_port = 1883
-topics = ['italia', 'salaD', 'lavadora', 'prueba']
+topics = ['italia', 'salaD', 'lavadora', 'camara2']
 
 cefrico = os.path.join(os.path.dirname(__file__), 'cefrico.json')
 print(cefrico)
