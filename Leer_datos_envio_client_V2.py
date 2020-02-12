@@ -60,40 +60,35 @@ while True:
     minuto = time.strftime("%M:%S")
 
     if minuto in('00:00', '15:00', '30:00', '45:00'):
-        if litros_italia != 0: 
-            hostname = "192.168.1.135"
-            response = os.system("ping -c 1 " + hostname + " > /dev/null 2>&1")   
-            if response == 0:
+        hostname = "192.168.19.161"
+        response = os.system("ping -c 1 " + hostname + " > /dev/null 2>&1") 
+        if response == 0:
+            if litros_italia != 0:            
                 topic = "italia"
                 payload = litros_italia
-                broker_address="192.168.1.135"
+                broker_address="192.168.19.161"
                 client = mqtt.Client('cefrico')
                 client.connect(broker_address)
                 print('Datos enviados')
                 client.publish(topic, payload)
                 payload = 0
                 litros_italia = 0
-
             else:
                 time.sleep(0.3)
-
-        if litros_camara2 != 0:
-            hostname = "192.168.1.135"
-            response = os.system("ping -c 1 " + hostname + " > /dev/null 2>&1")
-            if response == 0:            
+            if litros_camara2 != 0:        
                 topic = "camara2"
                 payload = litros_camara2
-                broker_address="192.168.1.135"
+                broker_address="192.168.19.161"
                 client = mqtt.Client('cefrico')
                 client.connect(broker_address)
                 print('Datos enviados')
                 client.publish(topic, payload)
                 payload = 0
                 litros_camara2 = 0
-
             else:
                 time.sleep(0.3)
-
+        else:
+            time.sleep(0.3)
     time.sleep(0.3)
     
 
