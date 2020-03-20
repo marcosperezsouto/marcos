@@ -11,7 +11,7 @@ while True:
 
     hora = time.strftime("%H:%M")
 
-    if hora == '06:50':
+    if hora == '10:48':
 
         ruta = os.getcwd() + os.sep
         origen = "/home/marcos1984/Escritorio/italia.csv"
@@ -42,7 +42,7 @@ while True:
         ubicacion = "/home/marcos1984/Documentos/italia"
         extension = ".csv"
 
-        nombre = ubicacion + dia + extension
+        nombre = ubicacion + " \ " + dia + extension
         print(nombre)
 
         archivo = "/home/marcos1984/Documentos/italia.csv"
@@ -50,7 +50,7 @@ while True:
 
         os.rename(archivo, nombre_nuevo)
 
-    time.sleep(50)
+        time.sleep(61)
 
     if hora == '06:52':
 
@@ -83,7 +83,7 @@ while True:
         ubicacion = "/home/marcos1984/Documentos/camara2"
         extension = ".csv"
 
-        nombre = ubicacion + dia + extension
+        nombre = ubicacion + " \ " + dia + extension
         print(nombre)
 
         archivo = "/home/marcos1984/Documentos/camara2.csv"
@@ -91,7 +91,7 @@ while True:
 
         os.rename(archivo, nombre_nuevo)
 
-    time.sleep(50)
+        time.sleep(61)
 
 
 
