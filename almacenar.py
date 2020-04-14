@@ -8,7 +8,7 @@ import paho.mqtt.client as mqtt
 import datetime
 import time
 
-broker_address = "localhost"
+broker_address = "192.168.19.161"
 broker_port = 1883
 topics = ['italia', 'salaD', 'lavadora', 'camara2']
 

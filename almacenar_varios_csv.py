@@ -7,15 +7,16 @@ import csv
 import paho.mqtt.client as mqtt
 import datetime
 
-broker_address = "localhost"
+broker_address = "192.168.19.161"
 broker_port = 1883
-topics = ['italia', 'salaD', 'lavadora', 'prueba']
+topics = ['italia', 'camara2', 'lavadora_1', 'lavadora_2']
 
 cefrico = os.path.join(os.path.dirname(__file__), 'cefrico.json')
 cefrico2 = os.path.join(os.path.dirname(__file__), 'cefrico2.json')
 italia_csv = os.path.join(os.path.dirname(__file__), 'italia.csv')
-salaD_csv = os.path.join(os.path.dirname(__file__), 'salaD.csv')
-prueba_csv = os.path.join(os.path.dirname(__file__), 'prueba.csv')
+camara2_csv = os.path.join(os.path.dirname(__file__), 'camara2.csv')
+lavadora_1_csv = os.path.join(os.path.dirname(__file__), 'lavadora_1.csv')
+lavadora_2_csv = os.path.join(os.path.dirname(__file__), 'lavadora_2.csv')
 
 try:
     with open(cefrico, 'r') as cefrico_file:
@@ -30,11 +31,12 @@ create_data = {}
 def crear_csv(fichero, datos):
     with open(fichero, 'w') as f:
         csv_create = csv.writer(f)
-        csv_create.writerow(['nombre', 'total', 'fecha',])
+        csv_create.writerow(['contador', 'fecha', 'hora', 'litros'])
         
 crear_csv(italia_csv, create_data)
-crear_csv(salaD_csv, create_data)
-crear_csv(prueba_csv, create_data)
+crear_csv(camara2_csv, create_data)
+crear_csv(lavadora_1_csv, create_data)
+crear_csv(lavadora_2_csv, create_data)
 
 
 def guardar_fichero(fichero, datos):
@@ -46,22 +48,27 @@ def csv_italia(fichero, datos):
     with open(fichero, 'a') as f:
         csv_file = csv.writer(f)
         for key in datos:
-            csv_file.writerow([key, datos[key]['total'], datos[key]['fecha']])  
+            csv_file.writerow([key, datos[key]['fecha'], datos[key]['hora'], datos[key]['litros']])  
 
 
-def csv_salaD(fichero, datos):
+def csv_camara2(fichero, datos):
     with open(fichero, 'a') as f:
         csv_file = csv.writer(f)
         for key in datos:
-            csv_file.writerow([key, datos[key]['total'], datos[key]['fecha']]) 
+            csv_file.writerow([key, datos[key]['fecha'], datos[key]['hora'], datos[key]['litros']])  
 
 
-def csv_prueba(fichero, datos):
+def csv_lavadora_1(fichero, datos):
     with open(fichero, 'a') as f:
         csv_file = csv.writer(f)
         for key in datos:
-            csv_file.writerow([key, datos[key]['total'], datos[key]['fecha']])         
+            csv_file.writerow([key, datos[key]['fecha'], datos[key]['hora'], datos[key]['litros']])          
 
+def csv_lavadora_2(fichero, datos):
+    with open(fichero, 'a') as f:
+        csv_file = csv.writer(f)
+        for key in datos:
+            csv_file.writerow([key, datos[key]['fecha'], datos[key]['hora'], datos[key]['litros']])          
 
 def on_connect(client, userdata, flags, rc):
     print("on connect"+str(rc))
@@ -86,18 +93,22 @@ def on_message(client, userdata, msg):
         print(cefrico_data)
 
 
-    cefrico_data[topic]['total'] = totales
-    fecha_str = datetime.datetime.now().replace(microsecond=0).isoformat()
+    fecha_str = datetime.date.today().isoformat()
     cefrico_data[topic]['fecha'] = fecha_str
+    hora_str = time.strftime("%H:%M")
+    cefrico_data[topic]['hora'] = hora_str
+    cefrico_data[topic]['litros'] = totales
     print(cefrico_data)
 
     guardar_fichero(cefrico2, cefrico_data)
     if topic=='italia':
         csv_italia(italia_csv, cefrico_data)
-    elif topic=='salaD':
-        csv_salaD(salaD_csv, cefrico_data)
-    elif topic=='prueba':
-        csv_prueba(prueba_csv, cefrico_data)
+    elif topic=='camara2':
+        csv_camara2(camara2_csv, cefrico_data)
+    elif topic=='lavadora_1':
+        csv_lavadora_1(lavadora_1_csv, cefrico_data)
+    elif topic=='lavadora_2':
+        csv_lavadora_2(lavadora_2_csv, cefrico_data)
     print('recibido')  
 
     
